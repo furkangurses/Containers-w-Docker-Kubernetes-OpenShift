@@ -99,31 +99,26 @@ CMD ["node", "app.js"]
 
 ```
 
-### 🔍 Instruction Anatomy
+### 🔍 Dockerfile Instruction Anatomy
 
-**Instruction**
+The following table breaks down the core Docker instructions utilized in production-grade environments.
 
-**Engineering Purpose**
+| Instruction | Technical Function | DevOps Implementation Logic |
+| :--- | :--- | :--- |
+| `FROM` | **Base Image** | Defines the foundational OS/Runtime (e.g., `node:14`). Mandatory for every build. |
+| `ENV` | **Environment Variables** | Injects runtime configurations (Port, DB_URL) without hardcoding values into the app. |
+| `WORKDIR` | **Directory Context** | Sets the absolute path for subsequent commands. Prevents file sprawl in the root (`/`) directory. |
+| `COPY` | **Artifact Transfer** | Moves local files into the image. Preferred over `ADD` for security and transparency. |
+| `ADD` | **External Injection** | Similar to COPY, but can extract `.tar` files or download from remote URLs. |
+| `RUN` | **Build-time Execution** | Executes commands during the image creation phase (e.g., `npm install` or `apt-get`). |
+| `EXPOSE` | **Network Documentation** | Informs Docker that the container listens on specific ports. Essential for orchestration. |
+| `CMD` | **Runtime Entrypoint** | Specifies the default process that starts when the container boots. Only one per file. |
+| `LABEL` | **Metadata tagging** | Adds organizational info (version, owner) for better image auditing and governance. |
+| `HEALTHCHECK` | **Resilience Probe** | Defines a command to verify the app's health status. Enables self-healing in K8s/Swarm. |
+| `USER` | **Privilege Escalation** | Switches to a non-root user (e.g., `node`). Critical for security and compliance. |
+* **Docker Hub:** The default, public registry for Docker images.
+* **IBM Cloud Container Registry:** A fully managed, highly available private registry provided by IBM Cloud.
 
-`FROM`
-
-Defines the starting file system. Mandatory first step.
-
-`WORKDIR`
-
-Establishes context. Prevents scattered files across the container root.
-
-`COPY` / `ADD`
-
-Transfers artifacts from Host to Container. (`COPY` is preferred for security).
-
-`RUN`
-
-Executes commands _during_ the build phase (e.g., installing binaries).
-
-`CMD`
-
-Defines the default runtime process when the container actually _starts_.
 
 ----------
 
@@ -246,25 +241,3 @@ Understanding these architectural concepts is critical for designing scalable sy
 * **Repository:** A collection of related Docker images (usually different versions of the same application) within a Registry.
 * **Private Registry:** A secure registry that restricts image access to authorized enterprise users.
 * **Tag:** A specific version label applied to an image within a repository (e.g., `myapp:v1.0`).
-
----
-
-### 🔍 Dockerfile Instruction Anatomy
-
-The following table breaks down the core Docker instructions utilized in production-grade environments.
-
-| Instruction | Technical Function | DevOps Implementation Logic |
-| :--- | :--- | :--- |
-| `FROM` | **Base Image** | Defines the foundational OS/Runtime (e.g., `node:14`). Mandatory for every build. |
-| `ENV` | **Environment Variables** | Injects runtime configurations (Port, DB_URL) without hardcoding values into the app. |
-| `WORKDIR` | **Directory Context** | Sets the absolute path for subsequent commands. Prevents file sprawl in the root (`/`) directory. |
-| `COPY` | **Artifact Transfer** | Moves local files into the image. Preferred over `ADD` for security and transparency. |
-| `ADD` | **External Injection** | Similar to COPY, but can extract `.tar` files or download from remote URLs. |
-| `RUN` | **Build-time Execution** | Executes commands during the image creation phase (e.g., `npm install` or `apt-get`). |
-| `EXPOSE` | **Network Documentation** | Informs Docker that the container listens on specific ports. Essential for orchestration. |
-| `CMD` | **Runtime Entrypoint** | Specifies the default process that starts when the container boots. Only one per file. |
-| `LABEL` | **Metadata tagging** | Adds organizational info (version, owner) for better image auditing and governance. |
-| `HEALTHCHECK` | **Resilience Probe** | Defines a command to verify the app's health status. Enables self-healing in K8s/Swarm. |
-| `USER` | **Privilege Escalation** | Switches to a non-root user (e.g., `node`). Critical for security and compliance. |
-* **Docker Hub:** The default, public registry for Docker images.
-* **IBM Cloud Container Registry:** A fully managed, highly available private registry provided by IBM Cloud.
