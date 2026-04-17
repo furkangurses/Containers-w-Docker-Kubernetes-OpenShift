@@ -2,10 +2,6 @@
 
 This repository contains projects, hands-on lab exercises, and technical documentation developed during the **"Containers, Docker, Kubernetes & OpenShift"** course provided by IBM. This training covers the essential pillars of Cloud-Native application development and modern DevOps practices.
 
----
-
-## 👨‍💻 Candidate Profile
-**Furkan** *Junior DevOps & Cloud Engineer Candidate*
 
 ---
 
